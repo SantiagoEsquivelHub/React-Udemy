@@ -11,7 +11,7 @@ const divRoot = document.getElementById("root");
 const root = ReactDOMClient.createRoot(divRoot);
 
 //Se renderiza el JSX en esa referencia
-root.render(<CounterApp value={41} />);
+root.render(<CounterApp value={10} />);
 
 
 
