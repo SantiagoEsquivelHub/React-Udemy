@@ -2,7 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 
 
-const AddCategory = ({ setCategories }) => {
+export const AddCategory = ({ setCategories }) => {
 
     const [inputValue, setInputValue] = useState('');
 
@@ -14,7 +14,7 @@ const AddCategory = ({ setCategories }) => {
         e.preventDefault(); //Evita el refresh de la pagina al hacer sl submit
 
         if (inputValue.trim().length > 2) {
-            setCategories(cats => [...cats, inputValue]);
+            setCategories(cats => [inputValue, ...cats]);
             setInputValue('');
         }
     }
@@ -39,4 +39,3 @@ AddCategory.propTypes = {
     setCategories: PropTypes.func.isRequired
 }
 
-export default AddCategory
