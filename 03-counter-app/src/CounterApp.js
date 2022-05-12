@@ -2,10 +2,10 @@ import React, {useState} from 'react'
 import PropTypes from 'prop-types'
 import './index.css';
 
-const CounterApp = ({value}) => {
+const CounterApp = ({value = 10}) => {
 
     //useState
-    const [counter, setCounter] = useState(0);
+    const [counter, setCounter] = useState(value);
 
 
     //handleAdd
@@ -42,7 +42,7 @@ const CounterApp = ({value}) => {
 }
 
 CounterApp.propTypes = {
-value: PropTypes.number.isRequired
+value: PropTypes.number
 }
 
 
