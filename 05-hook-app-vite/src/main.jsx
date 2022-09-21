@@ -14,8 +14,11 @@ import { Padre } from './07-tarea-memo/Padre';
 import { HooksApp } from './HooksApp';
 import './index.css'
 
+import './08-useReducer/intro-reducer'
+import { TodoApp } from './08-useReducer/TodoApp';
+
 ReactDOM.createRoot(document.getElementById('root')).render(
   //<React.StrictMode>
-    <Padre />
+    <TodoApp />
   //</React.StrictMode>
 )

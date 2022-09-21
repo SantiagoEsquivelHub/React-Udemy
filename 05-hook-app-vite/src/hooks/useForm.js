@@ -16,11 +16,7 @@ export const useForm = (initialForm = {}) => {
     }
 
     const handleReset = () => {
-        setFormState({
-            username: '',
-            email: '',
-            password: ''
-        })
+        setFormState(initialForm)
     }
 
     return {
