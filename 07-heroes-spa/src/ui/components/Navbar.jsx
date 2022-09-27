@@ -55,15 +55,6 @@ export const Navbar = ({ name, handleLogout }) => {
                     >
                         Search
                     </NavLink>
-
-                    <NavLink
-                        activeClassName="active"
-                        className="nav-item nav-link"
-                        exact
-                        to="/hero"
-                    >
-                        Hero
-                    </NavLink>
                 </div>
             </div>
 
