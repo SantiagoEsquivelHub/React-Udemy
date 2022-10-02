@@ -1,2 +1,2 @@
 # React-Udemy
-Repositorio sobre mi educacion sobre React :)
+Repositorio de mis proyectos desarrollados mientras aprendo sobre React :)
