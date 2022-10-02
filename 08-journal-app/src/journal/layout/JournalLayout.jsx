@@ -18,8 +18,9 @@ export const JournalLayout = ({ children }) => {
                 sx={{ flexGrow: 1, p: 3 }}
             >
                 <Toolbar />
-
                 {children}
+
+
             </Box>
 
 
