@@ -1,7 +1,9 @@
-import { Button, Grid, Link, TextField } from '@mui/material'
-import { useState } from 'react';
+import { Alert, Button, Grid, Link, TextField } from '@mui/material'
+import { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { Link as RouterLink } from 'react-router-dom'
 import { useForm } from '../../hooks/useForm';
+import { startCreatingUserWithEmailPassword } from '../../store/auth';
 import { AuthLayout } from '../layout/AuthLayout'
 
 const formData = {
@@ -10,23 +12,22 @@ const formData = {
   displayName: ''
 }
 
-/* const formValidations = {
-  email: [value => value.includes('@'), 'El correo debe de tener una @'],
-  password: [value => value.length >= 6, 'El password debe de tener mas de 6 letras'],
-  displayName: [value => value.length >= 1, 'El displayName es obligatorio'],
-} */
-
 const formValidations = {
   email: [(value) => /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(value), 'El correo debe de tener una @'],
   password: [(value) => value.length >= 6, 'El password debe de tener mas de 6 letras'],
   displayName: [(value) => value.length >= 1, 'El displayName es obligatorio'],
 }
 
-
-
 export const RegisterPage = () => {
 
+  const dispatch = useDispatch();
+
   const [formSubmitted, setFormSubmitted] = useState(false);
+
+  const { errorMessage, status } = useSelector(state => state.auth);
+
+  const isCheckingAuthentication = useMemo(() => status === 'checking', [status]);
+
 
   const {
     formState, displayName, email, password, onInputChange,
@@ -35,9 +36,13 @@ export const RegisterPage = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setFormSubmitted(true);
+
     console.log(formState)
 
-    setFormSubmitted(true);
+    if (!isFormValid) return;
+
+    dispatch(startCreatingUserWithEmailPassword(formState));
   }
 
   return (
@@ -89,9 +94,19 @@ export const RegisterPage = () => {
             />
           </Grid>
 
+
+
           <Grid container spacing={2} sx={{ mb: 2, mt: 1 }}>
+
+            <Grid item xs={12} sx={{ display: !!errorMessage ? '' : 'none' }}>
+              <Alert severity='error'>
+                {errorMessage}
+              </Alert>
+            </Grid>
+
             <Grid item xs={12}>
               <Button
+                disabled={isCheckingAuthentication}
                 variant='contained'
                 fullWidth
                 type='submit'
