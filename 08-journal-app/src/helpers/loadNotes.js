@@ -1,7 +1,7 @@
+import { collection, getDocs } from "firebase/firestore/lite";
 import { firebaseDB } from "../firebase/config";
 
-export const loadNotes = async () => {
-    const { uid } = getState().auth;
+export const loadNotes = async (uid = '') => {
 
     if (!uid) throw new Error('El UID del usuario no existe');
 
