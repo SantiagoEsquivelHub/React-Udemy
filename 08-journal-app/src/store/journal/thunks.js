@@ -62,8 +62,6 @@ export const startSavingNotes = () => {
         const noteToFireStore = { ...note }
         delete noteToFireStore.id;
 
-        console.log(noteToFireStore)
-
         const docRef = doc(firebaseDB, `${uid}/journal/notes/${note.id}`);
         await setDoc(docRef, noteToFireStore, { merge: true });
 
