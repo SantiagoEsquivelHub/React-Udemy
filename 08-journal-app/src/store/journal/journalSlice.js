@@ -12,7 +12,7 @@ export const journalSlice = createSlice({
         //     title: '',
         //     body: '',
         //     date: 12345,
-        //     imageUrls: []
+        //     imgsUrls: []
         // }
 
     },
@@ -42,11 +42,22 @@ export const journalSlice = createSlice({
 
             state.savedMessage = `${payload.title}, actualizada correctamente`;
         },
-        deleteNoteById: (state, action) => {
-
-        },
         savingNewNote: (state) => {
             state.isSaving = true;
+        },
+        setImgsToActiveNote: (state, { payload }) => {
+            state.active.imgsUrls = [...state.active.imgsUrls, ...payload];
+            state.isSaving = false;
+        },
+        clearNotesLogout: (state) => {
+            state.isSaving = false;
+            state.savedMessage = ``;
+            state.notes = [];
+            state.active = null;
+        },
+        deleteNoteById: (state, { payload: id }) => {
+            state.active = null;
+            state.notes = state.notes.filter(note => note.id !== id);
         },
     }
 });
@@ -60,5 +71,7 @@ export const {
     setSaving,
     updateNotes,
     deleteNoteById,
-    savingNewNote
+    savingNewNote,
+    setImgsToActiveNote,
+    clearNotesLogout
 } = journalSlice.actions;
