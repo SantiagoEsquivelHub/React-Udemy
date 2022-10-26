@@ -27,12 +27,19 @@ export const useForm = (initialForm = {}) => {
         })
     }
 
+    const onEventSelected = (calendarEvent) => {
+        setFormState({
+            ...calendarEvent,
+        })
+    }
+
     return {
         ...formState,
         formState,
         onInputChange,
         handleReset,
-        onDateChanged
+        onDateChanged,
+        onEventSelected
     }
 
 }

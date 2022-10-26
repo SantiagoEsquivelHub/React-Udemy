@@ -1,3 +1,5 @@
 export * from './pages/CalendarPage'
-export * from './components/CalendarModal/CalendarModal'
+export * from './components/CalendarModal'
 export * from './components/NavBar'
+export * from './components/FabAddNew'
+export * from './components/FabDelete'
