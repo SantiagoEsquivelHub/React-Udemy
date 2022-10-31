@@ -16,14 +16,12 @@ const loginUser = (req, res = response) => {
 
 const createUser = async (req, res = response) => {
 
-
     try {
         // const { name, email, password } = req.body;
 
         const user = new User(req.body);
-       const resp = await user.save();
+        const resp = await user.save();
 
-console.log(await resp)
 
         res.status(201).json({
             ok: true,
@@ -36,6 +34,7 @@ console.log(await resp)
             msg: 'Por favor hable con el admin'
         })
     }
+
 };
 
 const renewToken = (req, res = response) => {

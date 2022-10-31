@@ -2,7 +2,7 @@
 const mongoose = require('mongoose');
 
 const db_user = 'santiago';
-const db_password = 'w1CtfAppujsZRjNf';
+const db_password = 'FwJBnqTPeCwhurvs';
 
 const { DB_CNN } = process.env;
 

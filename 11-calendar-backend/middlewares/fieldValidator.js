@@ -12,6 +12,8 @@ const fieldValidator = (req, res = response, next) => {
             errors: errors.mapped()
         })
     }
+
+    next();
 }
 
 module.exports = {
