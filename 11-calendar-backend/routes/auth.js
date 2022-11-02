@@ -6,7 +6,7 @@ const { jwtValidator } = require('../middlewares/jwtValidator');
 const router = Router();
 
 /* 
-Rutas de Usuarios / Auth
+Auth Routes 
 host + /api/auth 
 */
 
@@ -14,8 +14,8 @@ host + /api/auth
 router.post(
     '/',
     [//middlewares
-        check('email', 'El email es obligatorio').isEmail(),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min: 6 }),
+        check('email', 'Email is required').isEmail(),
+        check('password', 'Password must have 6 characters').isLength({ min: 6 }),
         fieldValidator
     ],
     loginUser);
@@ -23,9 +23,9 @@ router.post(
 router.post(
     '/register',
     [//middlewares
-        check('name', 'El nombre es obligatorio').not().isEmpty(),
-        check('email', 'El email es obligatorio').isEmail(),
-        check('password', 'El password debe de ser de 6 caracteres').isLength({ min: 6 }),
+        check('name', 'Name is required').not().isEmpty(),
+        check('email', 'Email is required').isEmail(),
+        check('password', 'Password must have 6 characters').isLength({ min: 6 }),
         fieldValidator
     ],
     createUser);

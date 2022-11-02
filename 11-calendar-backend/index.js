@@ -1,5 +1,6 @@
 const express = require("express");
 const auth = require('./routes/auth');
+const events = require('./routes/events');
 const cors = require("cors");
 require('dotenv').config(); //obtener variables de entorno
 const { PORT } = process.env;
@@ -26,6 +27,8 @@ app.use(express.json());
 //Rutas
 
 app.use('/api/auth', auth);
+app.use('/api/events', events);
+
 
 //todo
 
