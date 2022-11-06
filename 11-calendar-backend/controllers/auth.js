@@ -16,7 +16,7 @@ const loginUser = async (req, res = response) => {
         if (!user) {
             return res.status(400).json({
                 ok: true,
-                msg: 'El usuario eno xiste con este correo',
+                msg: 'The user does not exists with this email',
             })
         }
 
@@ -27,7 +27,7 @@ const loginUser = async (req, res = response) => {
         if (!validPassword) {
             return res.status(500).json({
                 ok: false,
-                msg: "Password incorrecto"
+                msg: "Incorrect password"
             })
         }
 
@@ -47,7 +47,7 @@ const loginUser = async (req, res = response) => {
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el admin'
+            msg: 'Talks to admin'
         })
     }
 };
@@ -64,7 +64,7 @@ const createUser = async (req, res = response) => {
         if (user) {
             return res.status(400).json({
                 ok: true,
-                msg: 'Un usuario existe con este correo',
+                msg: 'The user alrady exists with this email',
             })
         }
 
@@ -82,17 +82,17 @@ const createUser = async (req, res = response) => {
         res.status(201).json({
             ok: true,
             uid: user._id,
-            name: usuario.name,
+            name: user.name,
         })
 
     } catch (error) {
         res.status(500).json({
             ok: false,
-            msg: 'Por favor hable con el admin'
+            msg: 'Talks to admin'
         })
     }
 
-};
+};  
 
 const renewToken = async (req, res = response) => {
 
