@@ -1,12 +1,13 @@
 import { useReducer } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Navigate } from "react-router-dom";
 import calendarApi from "../api";
 import { clearErrorMessage, onChecking, onLogin, onLogout } from "../store";
 
 export const useAuthStore = () => {
 
     const dispatch = useDispatch();
-    const { status, user, errorMessage } = useReducer(state => state.auth);
+    const { status, user, errorMessage } = useSelector(state => state.auth);
 
     const Checking = () => {
         dispatch(onChecking);
@@ -33,18 +34,52 @@ export const useAuthStore = () => {
 
             setTimeout(() => {
                 dispatch(clearErrorMessage());
-            }, 10);
+            }, 1000);
+
         }
     }
 
+    const startRegister = async ({ name, email, password }) => {
+
+        dispatch(onChecking);
+
+        try {
+
+            const { data } = await calendarApi.post('/auth/register', {
+                name,
+                email,
+                password
+            });
+
+            localStorage.setItem('token', data.token);
+            localStorage.setItem('token-init-date', new Date().getTime());
+            dispatch(onLogin({ name: data.name, uid: data.uid }));
+
+        } catch (error) {
+            console.log(error)
+            dispatch(onLogout(error.response.data?.msg || '--'));
+
+            setTimeout(() => {
+                dispatch(clearErrorMessage());
+            }, 1000);
+        }
+    }
+
+    const startLogout = () => {
+        dispatch(onLogout());
+    }
+
+
     return {
         //Properties
+        errorMessage,
         status,
         user,
-        errorMessage,
 
         //Functions
         Checking,
-        startLogin
+        startLogin,
+        startRegister,
+        startLogout
     }
 }
