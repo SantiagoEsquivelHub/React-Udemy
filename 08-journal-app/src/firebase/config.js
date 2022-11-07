@@ -32,13 +32,13 @@ const {
 
 //Testing
 /* const firebaseConfig = {
-    apiKey: "AIzaSyAMVeO_PwcNgVseFb9q2HTlE0vYa3zCqlc",
-    authDomain: "journalapp-testing-b0c73.firebaseapp.com",
-    projectId: "journalapp-testing-b0c73",
-    storageBucket: "journalapp-testing-b0c73.appspot.com",
-    messagingSenderId: "402107802313",
-    appId: "1:402107802313:web:efef06d2a09a5180de2318",
-    measurementId: "G-JE24DG4XHY"
+  apiKey: "AIzaSyAMVeO_PwcNgVseFb9q2HTlE0vYa3zCqlc",
+  authDomain: "journalapp-testing-b0c73.firebaseapp.com",
+  projectId: "journalapp-testing-b0c73",
+  storageBucket: "journalapp-testing-b0c73.appspot.com",
+  messagingSenderId: "402107802313",
+  appId: "1:402107802313:web:efef06d2a09a5180de2318",
+  measurementId: "G-JE24DG4XHY"
   }; */
 
 const firebaseConfig = {
