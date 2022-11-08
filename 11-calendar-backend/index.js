@@ -29,6 +29,11 @@ app.use(express.json());
 app.use('/api/auth', auth);
 app.use('/api/events', events);
 
+app.get('*', (req, res) => {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+
 
 //todo
 
