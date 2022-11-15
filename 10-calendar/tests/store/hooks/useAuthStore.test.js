@@ -4,14 +4,15 @@ import { act } from "react-dom/test-utils"
 import { Provider } from "react-redux"
 import calendarApi from "../../../src/api"
 import { useAuthStore } from "../../../src/hooks/useAuthStore"
-import { authSlice } from "../../../src/store"
+import { authSlice, calendarSlice } from "../../../src/store"
 import { authenticatedState, initialState, notAuthenticatedState } from "../../fixtures/authStates"
 import { testUser } from "../../fixtures/testUser"
 
 const getMockStore = (initialState) => {
     return configureStore({
         reducer: {
-            auth: authSlice.reducer
+            auth: authSlice.reducer,
+            calendar: calendarSlice.reducer
         },
         preloadedState: { ...initialState }
     })
@@ -198,7 +199,7 @@ describe('Pruebas en useAuthStore', () => {
         spy.mockRestore()
     })
 
-    test('startRegister debe de fallar la creación de un nuevo usuario', async() => {
+    test('startRegister debe de fallar la creación de un nuevo usuario', async () => {
 
         //Not Authenticated State
         const mockStore = getMockStore({ ...notAuthenticatedState });
@@ -228,7 +229,148 @@ describe('Pruebas en useAuthStore', () => {
             errorMessage: 'The user already exists with this email',
             status: 'not-authenticated',
             user: {}
-        }); 
+        });
+
+    })
+
+    test('checkingAuthToken debe de fallar si no hay token', async () => {
+
+        const mockStore = getMockStore({ ...initialState });
+
+        const { result } = renderHook(() => useAuthStore(), {
+            wrapper: ({ children }) =>
+                <Provider store={mockStore}>
+                    {children}
+                </Provider>
+        });
+
+
+        await act(async () => {
+            //Async function
+            await result.current.checkingAuthToken();
+        })
+
+        const { errorMessage, status, user } = result.current;
+
+        expect({ errorMessage, status, user }).toEqual({
+            errorMessage: undefined,
+            status: 'not-authenticated',
+            user: {}
+        });
+
+    })
+
+    test('checkingAuthToken debe de autenticar al usuario si hay un token con spyOn', async () => {
+
+        const mockStore = getMockStore({ ...initialState });
+
+        const { result } = renderHook(() => useAuthStore(), {
+            wrapper: ({ children }) =>
+                <Provider store={mockStore}>
+                    {children}
+                </Provider>
+        });
+
+        localStorage.setItem('token', 'some_id');
+
+        const spy = jest.spyOn(calendarApi, 'get').mockReturnValue({
+            data: {
+                ok: true,
+                msg: "renew",
+                uid: "some-id",
+                name: "Test User",
+                newToken: "some-token"
+            }
+
+        });
+
+
+        await act(async () => {
+            //Async function
+            await result.current.checkingAuthToken();
+        })
+
+        const { errorMessage, status, user } = result.current;
+
+        expect({ errorMessage, status, user }).toEqual({
+            errorMessage: undefined,
+            status: 'authenticated',
+            user: {
+                name: 'Test User',
+                uid: 'some-id'
+            }
+        })
+
+        spy.mockRestore();
+
+    })
+
+    test('checkingAuthToken debe de autenticar al usuario si hay un token con petición a backend', async () => {
+
+
+        const { data } = await calendarApi.post('/auth/', testUser);
+
+        const { token } = data;
+
+        // We set the test user token to do the request 
+        localStorage.setItem('token', token);
+
+        const mockStore = getMockStore({ ...initialState });
+
+        const { result } = renderHook(() => useAuthStore(), {
+            wrapper: ({ children }) =>
+                <Provider store={mockStore}>
+                    {children}
+                </Provider>
+        });
+
+        await act(async () => {
+            //Async function
+            await result.current.checkingAuthToken();
+        })
+
+        const { errorMessage, status, user } = result.current;
+
+        expect({ errorMessage, status, user }).toEqual({
+            errorMessage: undefined,
+            status: 'authenticated',
+            user: {
+                name: 'Test User',
+                uid: '636ab98d0f19c57dcbc8dbc7'
+            }
+        })
+    })
+
+    test('startLogout debe de limpiar el localStorage y limpiar los estados del redux del calendar y del auth', () => {
+
+        const mockStore = getMockStore({ ...authenticatedState });
+
+        const { result } = renderHook(() => useAuthStore(), {
+            wrapper: ({ children }) =>
+                <Provider store={mockStore}>
+                    {children}
+                </Provider>
+        });
+
+        localStorage.setItem('token', 'some-token');
+        localStorage.setItem('token-init-date', 'some-token-init-date');
+
+
+        act(() => {
+            //Sync function
+            result.current.startLogout();
+        })
+
+        const { errorMessage, status, user } = result.current;
+
+
+        expect(localStorage.getItem('token')).toBe(null);
+        expect(localStorage.getItem('token-init-date')).toBe(null);
+        expect({ errorMessage, status, user }).toEqual({
+            errorMessage: undefined,
+            status: 'not-authenticated',
+            user: {}
+        });
 
     })
 
